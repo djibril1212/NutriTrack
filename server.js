@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const Meal = require('./models/mealModel');
 const Goal = require('./models/goalModel');
+const { calculateTotals } = require('./utils/nutritionUtils');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -68,6 +69,27 @@ app.get('/goals', async (req, res) => {
       res.status(500).json({ message: 'Erreur lors de la mise à jour des objectifs.', error });
     }
   });
+
+
+  app.get('/meals/today', async (req, res) => {
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+  
+      const todayMeals = await Meal.find({
+        date: { $gte: today, $lt: tomorrow }
+      });
+  
+      const totals = calculateTotals(todayMeals);
+  
+      res.status(200).json({ totals, count: todayMeals.length, meals: todayMeals });
+    } catch (error) {
+      res.status(500).json({ message: 'Erreur lors du calcul des apports journaliers.', error });
+    }
+  });
+
 
 
   
