@@ -90,6 +90,46 @@ app.get('/goals', async (req, res) => {
     }
   });
 
+  app.get('/meals/today/compare', async (req, res) => {
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+  
+      const todayMeals = await Meal.find({
+        date: { $gte: today, $lt: tomorrow }
+      });
+  
+      const goals = await Goal.findOne(); // il ne devrait y avoir qu’un seul document
+  
+      if (!goals) {
+        return res.status(404).json({ message: 'Objectifs non définis.' });
+      }
+  
+      const totals = calculateTotals(todayMeals);
+  
+      const progress = {
+        calories: `${((totals.calories / goals.dailyCalories) * 100).toFixed(1)}%`,
+        proteins: `${((totals.proteins / goals.dailyProteins) * 100).toFixed(1)}%`,
+        carbs: `${((totals.carbs / goals.dailyCarbs) * 100).toFixed(1)}%`,
+        fats: `${((totals.fats / goals.dailyFats) * 100).toFixed(1)}%`
+      };
+  
+      res.status(200).json({
+        totals,
+        goals: {
+          calories: goals.dailyCalories,
+          proteins: goals.dailyProteins,
+          carbs: goals.dailyCarbs,
+          fats: goals.dailyFats
+        },
+        progress
+      });
+    } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la comparaison avec les objectifs.', error });
+    }
+  });
 
 
   
