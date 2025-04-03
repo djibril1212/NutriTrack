@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NutriTrack 🍽️</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/chart.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  </head>
+<div id="meal-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+      <h2 class="text-xl font-bold mb-4 text-green-600">Ajouter un repas</h2>
+      <form id="manual-meal-form" class="space-y-3">
+        <input name="name" type="text" placeholder="Nom du repas" required class="w-full p-2 border rounded" />
+        <input name="calories" type="number" placeholder="Calories" required class="w-full p-2 border rounded" />
+        <input name="proteins" type="number" placeholder="Protéines (g)" required class="w-full p-2 border rounded" />
+        <input name="carbs" type="number" placeholder="Glucides (g)" required class="w-full p-2 border rounded" />
+        <input name="fats" type="number" placeholder="Lipides (g)" required class="w-full p-2 border rounded" />
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeMealModal()" class="px-4 py-2 text-gray-500 hover:text-gray-700">Annuler</button>
+          <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Ajouter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <body class="bg-gray-100 text-gray-800 h-screen">
+    <div class="flex h-full">
+
+      <aside class="w-64 bg-white shadow-md px-6 py-4 flex flex-col">
+        <h2 class="text-2xl font-bold text-green-600 mb-8">NutriTrack 🍽️</h2>
+        <nav class="flex flex-col gap-2 text-base font-medium">
+          <a href="#" class="rounded-lg px-3 py-2 text-violet-700 bg-violet-100">Dashboard</a>
+          <a href="#" class="rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-green-600 transition">Repas</a>
+          <a href="#" class="rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-green-600 transition">Objectifs</a>
+          <a href="#" class="rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-green-600 transition">Statistiques</a>
+        </nav>
+        <div class="mt-auto pt-6 border-t text-sm text-gray-500">
+          © 2025 NutriTrack
+        </div>
+      </aside>
+      <main class="flex-1 p-10 overflow-y-auto">
+        <h1 class="text-3xl font-semibold mb-4">Bienvenue sur NutriTrack !</h1>
+        <p class="text-lg text-gray-700 mb-8">
+          Suivez vos apports nutritionnels, fixez vos objectifs et améliorez votre alimentation chaque jour.
+        </p>
+        <div id="main-content"></div>
+      </main>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

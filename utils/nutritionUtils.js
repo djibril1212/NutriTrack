@@ -1,6 +1,5 @@
 const R = require('ramda');
-
-// Fonction pure pour calculer les totaux nutritionnels
+// Fonctionles totaux nutritionnels
 const calculateTotals = (meals) => R.reduce(
   (acc, meal) => ({
     calories: acc.calories + meal.calories,
@@ -11,7 +10,6 @@ const calculateTotals = (meals) => R.reduce(
   { calories: 0, proteins: 0, carbs: 0, fats: 0 },
   meals
 );
-
 module.exports = {
   calculateTotals
 };
